@@ -1,0 +1,23 @@
+{
+  "name": "rg-carta-3d-estable",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "dependencies": {
+    "@react-three/fiber": "8.17.10",
+    "@react-three/drei": "9.114.3",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "three": "0.170.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "4.3.4",
+    "vite": "5.4.21"
+  },
+  "engines": {"node": ">=18.0.0 <25"}
+}
