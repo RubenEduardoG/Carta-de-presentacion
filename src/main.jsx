@@ -10,6 +10,34 @@ const PORTFOLIO='https://ruben-portfolio-steel.vercel.app/';
 // Opcional: pegá tu número con código de país, solo números. Ej: 54911XXXXXXXX
 const WHATSAPP_NUMBER='';
 
+// Animaciones de entrada (CSS puro, sin librerías). Si JS falla, el contenido igual se ve.
+const ENTRY_CSS=`
+@keyframes rgFall{from{opacity:0;transform:translateY(-24px)}to{opacity:1;transform:none}}
+.anim-in{animation:rgFall .75s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d,0ms)}
+.scene-canvas{opacity:0;transition:opacity 1.1s ease}
+.scene-canvas.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.anim-in{animation:none}.scene-canvas{transition:none}}
+`;
+if(typeof document!=='undefined'&&!document.getElementById('rg-entry')){
+ const s=document.createElement('style');s.id='rg-entry';s.textContent=ENTRY_CSS;document.head.appendChild(s);
+}
+
+// Comprueba si el navegador puede crear un contexto WebGL
+function hasWebGL(){
+ try{
+  const c=document.createElement('canvas');
+  return !!(window.WebGLRenderingContext&&(c.getContext('webgl2')||c.getContext('webgl')));
+ }catch(e){return false}
+}
+
+// Si el 3D falla, la página sigue funcionando con el fondo rosado
+class SceneBoundary extends React.Component{
+ constructor(p){super(p);this.state={failed:false}}
+ static getDerivedStateFromError(){return{failed:true}}
+ componentDidCatch(err){console.warn('3D desactivado:',err)}
+ render(){return this.state.failed?null:this.props.children}
+}
+
 // Halo rosado detrás de la escena (textura generada por código, sin descargas)
 function Halo(){
  const tex=useMemo(()=>{
@@ -35,7 +63,8 @@ function OrbitRing({radius,tilt,color,opacity,speed}){
 
 function Core(){
  const group=useRef(),ring=useRef(),satA=useRef(),satB=useRef();
- const{gl,scene}=useThree();
+ const{gl,scene,size}=useThree();
+ const mobile=size.width<768;
  const drag=useRef({active:false,x:0,y:0,vx:0,vy:0});
 
  // Entorno de reflejos procedural: brillo metálico real sin descargar HDRI
@@ -56,15 +85,18 @@ function Core(){
   }else{
    group.current.rotation.y+=d.vx;group.current.rotation.x+=d.vy;d.vx*=.9;d.vy*=.9;
   }
-  group.current.position.x=THREE.MathUtils.lerp(group.current.position.x,-px*.3,.04);
-  group.current.position.y=THREE.MathUtils.lerp(group.current.position.y,-py*.2,.04);
+  // En celular el blob sube y queda arriba del texto
+  group.current.position.x=THREE.MathUtils.lerp(group.current.position.x,mobile?0:-px*.3,.04);
+  group.current.position.y=THREE.MathUtils.lerp(group.current.position.y,mobile?.75:-py*.2,.04);
   ring.current.rotation.z+=dt*.12;
   const t=state.clock.elapsedTime*.5;
   satA.current.position.set(Math.cos(t)*2.3,Math.sin(t)*2.3*.35,0);
   satB.current.position.set(Math.cos(t+Math.PI)*2.3,Math.sin(t+Math.PI)*2.3*.35,0);
-  state.camera.position.x=THREE.MathUtils.lerp(state.camera.position.x,px*.35,.025);
-  state.camera.position.y=THREE.MathUtils.lerp(state.camera.position.y,py*.2,.025);
-  state.camera.position.z=THREE.MathUtils.lerp(state.camera.position.z,5.9-Math.abs(px)*.15,.025);
+  if(!mobile){
+   state.camera.position.x=THREE.MathUtils.lerp(state.camera.position.x,px*.35,.025);
+   state.camera.position.y=THREE.MathUtils.lerp(state.camera.position.y,py*.2,.025);
+  }
+  state.camera.position.z=THREE.MathUtils.lerp(state.camera.position.z,(mobile?7.8:5.9)-Math.abs(px)*.15,.025);
   state.camera.lookAt(0,0,0);
  });
 
@@ -74,44 +106,78 @@ function Core(){
 
  return <>
   <Float speed={1.2} rotationIntensity={.1} floatIntensity={.45}>
-   <group ref={group} scale={1.1} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerOut={up}>
+   <group ref={group} scale={mobile?.8:1.1} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerOut={up}>
     <mesh>
-     <icosahedronGeometry args={[1.35,64]}/>
-     <MeshDistortMaterial color="#0a0a0d" metalness={1} roughness={.12} clearcoat={1} clearcoatRoughness={.05} distort={.32} speed={1.4} envMapIntensity={1.4}/>
+     <icosahedronGeometry args={[1.35,28]}/>
+     <MeshDistortMaterial color="#0a0a0d" metalness={1} roughness={.15} distort={.3} speed={1.2} envMapIntensity={1.4}/>
     </mesh>
     <mesh rotation={[Math.PI/2.4,0,0]}>
-     <torusGeometry args={[1.62,.012,16,220]}/>
+     <torusGeometry args={[1.62,.012,12,140]}/>
      <meshBasicMaterial color="#ff1684"/>
     </mesh>
    </group>
   </Float>
   <group ref={ring} position={[0,0,-.3]}>
    <mesh rotation={[1.2,.3,0]}>
-    <torusGeometry args={[2.6,.004,8,260]}/>
+    <torusGeometry args={[2.6,.004,6,160]}/>
     <meshBasicMaterial color="#ff1684" transparent opacity={.22}/>
    </mesh>
   </group>
-  <mesh ref={satA} scale={.14}><sphereGeometry args={[1,32,24]}/><meshPhysicalMaterial color="#ff1684" emissive="#ff006c" emissiveIntensity={1.4} metalness={1} roughness={.1}/></mesh>
-  <mesh ref={satB} scale={.09}><sphereGeometry args={[1,32,24]}/><meshPhysicalMaterial color="#e6e6ec" metalness={1} roughness={.05}/></mesh>
+  <mesh ref={satA} scale={.14}><sphereGeometry args={[1,16,12]}/><meshBasicMaterial color="#ff1684"/></mesh>
+  <mesh ref={satB} scale={.09}><sphereGeometry args={[1,16,12]}/><meshStandardMaterial color="#e6e6ec" metalness={1} roughness={.05}/></mesh>
   <group position={[0,0,-.4]}>
    <OrbitRing radius={3.3} tilt={[1.2,0,.3]} color="#ff1684" opacity={.35} speed={.05}/>
    <OrbitRing radius={3.9} tilt={[.4,.6,-.5]} color="#ffffff" opacity={.12} speed={-.035}/>
-   <OrbitRing radius={4.6} tilt={[1.45,.2,1.1]} color="#ff1684" opacity={.18} speed={.025}/>
   </group>
  </>
 }
 
-function Scene(){return <Canvas dpr={[1,1.25]} camera={{position:[0,0,5.9],fov:39}} gl={{antialias:true,powerPreference:'high-performance',toneMapping:THREE.ACESFilmicToneMapping,toneMappingExposure:1.15}}>
- <fog attach="fog" args={['#050506',7,14]}/>
- <ambientLight intensity={.25}/>
- <pointLight position={[3,4,4]} intensity={60} color="#ff1684"/>
- <pointLight position={[-4,-2,3]} intensity={30} color="#8fb8ff"/>
- <pointLight position={[0,3,-3]} intensity={40} color="#ffffff"/>
- <Halo/>
- <Core/>
- <Sparkles count={120} scale={[10,7,6]} size={2} speed={.2} opacity={.6} color="#ff5aa5"/>
- <Sparkles count={60} scale={[10,7,6]} size={1.2} speed={.1} opacity={.35}/>
- </Canvas>}
+// El 3D se monta cuando el navegador está libre, no bloquea el texto.
+// Se pausa cuando la escena sale de pantalla y no se monta si el usuario prefiere menos movimiento.
+function Scene(){
+ const[mounted,setMounted]=useState(false);
+ const[ready,setReady]=useState(false);
+ const[visible,setVisible]=useState(true);
+ const[webgl]=useState(()=>hasWebGL());
+ const wrap=useRef(null);
+ const mobile=typeof window!=='undefined'&&window.innerWidth<768;
+ const lowEnd=typeof navigator!=='undefined'&&(navigator.hardwareConcurrency||8)<=4;
+ const noMotion=typeof window!=='undefined'&&!!window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+ useEffect(()=>{
+  if(!webgl||noMotion)return;
+  if('requestIdleCallback'in window){
+   const id=window.requestIdleCallback(()=>setMounted(true),{timeout:600});
+   return()=>window.cancelIdleCallback(id);
+  }
+  const id=setTimeout(()=>setMounted(true),300);
+  return()=>clearTimeout(id);
+ },[webgl,noMotion]);
+
+ useEffect(()=>{
+  const el=wrap.current;
+  if(!el||!('IntersectionObserver'in window))return;
+  const io=new IntersectionObserver(([e])=>setVisible(e.isIntersecting));
+  io.observe(el);
+  return()=>io.disconnect();
+ },[]);
+
+ return <div ref={wrap} style={{width:'100%',height:'100%'}}>
+  {mounted&&webgl&&<div className={`scene-canvas${ready?' on':''}`} style={{width:'100%',height:'100%'}}>
+   <SceneBoundary>
+    <Canvas frameloop={visible?'always':'never'} dpr={mobile||lowEnd?1:[1,1.25]} onCreated={()=>setReady(true)} camera={{position:[0,0,mobile?7.8:5.9],fov:39}} gl={{antialias:!mobile,powerPreference:'high-performance',toneMapping:THREE.ACESFilmicToneMapping,toneMappingExposure:1.15}}>
+     <fog attach="fog" args={['#050506',7,14]}/>
+     <ambientLight intensity={.25}/>
+     <pointLight position={[3,4,4]} intensity={60} color="#ff1684"/>
+     <pointLight position={[-4,-2,3]} intensity={30} color="#8fb8ff"/>
+     <Halo/>
+     <Core/>
+     <Sparkles count={mobile?25:70} scale={[10,7,6]} size={2} speed={.2} opacity={.5} color="#ff5aa5"/>
+    </Canvas>
+   </SceneBoundary>
+  </div>}
+ </div>
+}
 
 const initial={name:'',company:'',contact:'',type:'Landing Page',idea:'',current:'',references:'',materials:[],design:'',features:'',deadline:'',budget:''};
 function ProjectModal({close,initialType='Landing Page'}){
@@ -141,17 +207,17 @@ function App(){
  const onMouseMove=e=>{if(move.current){const x=e.clientX/window.innerWidth-.5,y=e.clientY/window.innerHeight-.5;move.current.style.setProperty('--mx',`${x*25}px`);move.current.style.setProperty('--my',`${y*18}px`)}};
  return <main className="page" onMouseMove={onMouseMove}>
   <div className="scene"><Scene/></div><div className="grain"/>
-  <nav><a className="brand" href="#inicio" aria-label="Inicio RG">RG<span>.</span></a><div className="navright"><a href="#servicios">SERVICIOS</a><a href={PORTFOLIO} target="_blank" rel="noreferrer">PORTFOLIO ↗</a><button onClick={()=>start()}>HABLEMOS ↗</button></div></nav>
+  <nav className="anim-in" style={{'--d':'0ms'}}><a className="brand" href="#inicio" aria-label="Inicio RG">RG<span>.</span></a><div className="navright"><a href="#servicios">SERVICIOS</a><a href={PORTFOLIO} target="_blank" rel="noreferrer">PORTFOLIO ↗</a><button onClick={()=>start()}>HABLEMOS ↗</button></div></nav>
   <section className="hero" id="inicio" ref={move}>
-   <div className="eyebrow"><i/> RUBÉN GUTIÉRREZ · DESARROLLADOR WEB FREELANCE</div>
-   <h1>TU IDEA<br/><em>MÁS LEJOS.</em></h1>
-   <div className="pitch"><p>Diseño y desarrollo soluciones digitales que combinan <strong>identidad, tecnología y estrategia</strong> para que tu negocio crezca.</p>
+   <div className="eyebrow anim-in" style={{'--d':'120ms'}}><i/> RUBÉN GUTIÉRREZ · DESARROLLADOR WEB FREELANCE</div>
+   <h1 className="anim-in" style={{'--d':'240ms'}}>TU IDEA<br/><em>MÁS LEJOS.</em></h1>
+   <div className="pitch anim-in" style={{'--d':'380ms'}}><p>Diseño y desarrollo soluciones digitales que combinan <strong>identidad, tecnología y estrategia</strong> para que tu negocio crezca.</p>
    <div className="hero-tags"><span>WEB</span><span>E-COMMERCE</span><span>3D</span><span>AUTOMATIZACIONES</span></div>
-   <div className="actions"><button className="primary" onClick={()=>start()}>CONTAME TU PROYECTO <b>→</b></button><a className="secondary" href={PORTFOLIO} target="_blank" rel="noreferrer">VER PORTFOLIO ↗</a></div>
+   <div className="actions anim-in" style={{'--d':'520ms'}}><button className="primary" onClick={()=>start()}>CONTAME TU PROYECTO <b>→</b></button><a className="secondary" href={PORTFOLIO} target="_blank" rel="noreferrer">VER PORTFOLIO ↗</a></div>
    <div className="hint">MOVÉ EL MOUSE · EXPLORÁ EL 3D · DESLIZÁ PARA DESCUBRIR</div></div>
   </section>
   <section className="statement" id="concepto"><span className="section-kicker">01 / QUÉ HAGO</span><h2>NO SE TRATA SOLO<br/>DE ESTAR ONLINE.<br/><em>SE TRATA DE DESTACAR.</em></h2><p>Desde una landing enfocada en captar clientes hasta una tienda online o una solución a medida. Cada proyecto empieza con un objetivo claro y se construye alrededor de tu negocio.</p></section>
-  <section className="services-section" id="servicios"><div className="section-heading"><span className="section-kicker">02 / SOLUCIONES DIGITALES</span><h2>QUÉ PODEMOS<br/><em>CREAR JUNTOS.</em></h2></div><div className="services-grid">{services.map(s=><button className="service-card" key={s.number} onClick={()=>start(s.type)}><span className="card-number">{s.number} / SERVICIO</span><span className="card-glyph">{s.glyph}</span><strong>{s.name}</strong><p>{s.detail}</p><span className="card-link">CONTAR MI IDEA ↗</span></button>)}</div></section>
+  <section className="services-section" id="servicios"><div className="section-heading"><span className="section-kicker">02 / SOLUCIONES DIGITALES</span><h2>QUÉ PODEMOS<br/><em>CREAR JUNTOS.</em></h2></div><div className="services-grid anim-in" style={{'--d':'700ms'}}>{services.map(s=><button className="service-card" key={s.number} onClick={()=>start(s.type)}><span className="card-number">{s.number} / SERVICIO</span><span className="card-glyph">{s.glyph}</span><strong>{s.name}</strong><p>{s.detail}</p><span className="card-link">CONTAR MI IDEA ↗</span></button>)}</div></section>
   <section className="process-section" id="proceso"><span className="section-kicker">03 / CÓMO TRABAJO</span><h2>UNA IDEA. UN PLAN.<br/><em>UN RESULTADO.</em></h2><div className="steps">{[['01','CONVERSAMOS','Entiendo tu negocio y lo que necesitás.'],['02','PLANIFICAMOS','Definimos alcance, materiales y tiempos.'],['03','DESARROLLAMOS','Diseño, implementación y revisiones.'],['04','PUBLICAMOS','Pruebas, entrega y puesta en marcha.']].map(([n,t,d])=><div className="step" key={n}><span>{n}</span><strong>{t}</strong><p>{d}</p></div>)}</div></section>
   <section className="contact-section" id="contacto"><div className="contact-panel"><span className="section-kicker">04 / TU PRÓXIMO PROYECTO</span><h2>¿LO HACEMOS<br/><em>REALIDAD?</em></h2><p>Contame qué querés crear, qué materiales ya tenés y cuándo necesitás lanzarlo. Con esa información podemos empezar con un plan claro.</p><div className="actions"><button className="primary" onClick={()=>start()}>SOLICITAR PRESUPUESTO ↗</button><a className="secondary" href={PORTFOLIO} target="_blank" rel="noreferrer">CONOCÉ MI TRABAJO ↗</a></div></div></section>
   <footer className="footerline"><span>RG. · RUBÉN GUTIÉRREZ</span><a href="mailto:rubengutierrezdv@gmail.com">RUBENGUTIERREZDV@GMAIL.COM</a><span>© 2026 · DESARROLLO WEB FREELANCE</span></footer>
