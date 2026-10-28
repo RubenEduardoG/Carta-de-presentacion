@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { EMAIL, WHATSAPP_NUMBER, FORM_ENDPOINT } from '../config.js';
+import { EMAIL, WHATSAPP_NUMBER, FORM_ENDPOINT, GITHUB_URL, LINKEDIN_URL, CV_URL } from '../config.js';
 import { PROJECT_TYPES } from '../data.js';
 import { CHANNEL, shortMessage, submitLead } from '../lead.js';
 import FormStatus from './FormStatus.jsx';
@@ -38,6 +38,11 @@ export default function Contact({ onStart }) {
             <a className="secondary" href={`mailto:${EMAIL}`}>{EMAIL.toUpperCase()}</a>
           </div>
           <button className="linkbtn" onClick={() => onStart()}>Prefiero completar un brief detallado →</button>
+          <ul className="social">
+            <li><a href={CV_URL} download>Descargar CV ↓</a></li>
+            <li><a href={GITHUB_URL} target="_blank" rel="noopener noreferrer">GitHub ↗</a></li>
+            <li><a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></li>
+          </ul>
         </div>
 
         <form className="contact-form" onSubmit={submit} aria-label="Formulario de consulta">

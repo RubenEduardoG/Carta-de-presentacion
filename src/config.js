@@ -4,6 +4,9 @@
 
 export const PORTFOLIO_URL = 'https://ruben-portfolio-steel.vercel.app/';
 export const EMAIL = 'rubengutierrezdv@gmail.com';
+export const GITHUB_URL = 'https://github.com/RubenEduardoG';
+export const LINKEDIN_URL = 'https://www.linkedin.com/in/r%C3%BAben-eduardo-gutierrez';
+export const CV_URL = '/cv-ruben-full-stack.pdf';
 
 // Número con código de país, solo dígitos. Ej: 54911XXXXXXXX
 // PENDIENTE: mientras esté vacío no se muestra el botón de WhatsApp.
