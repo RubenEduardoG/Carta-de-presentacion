@@ -1,22 +1,26 @@
-# RG · Carta de presentación 3D (versión 3)
+# RG · Landing de captación (React + Vite + React Three Fiber)
+
+Landing de una sola página: Hero 3D → Servicios → Proyectos → Cómo trabajo → Por qué conmigo → Contacto.
 
 ## Requisitos
-Node.js 20 LTS o 22 LTS de 64 bits. Google Chrome/Edge con aceleración gráfica habilitada.
+Node.js 20 o 22 LTS (64 bits). Chrome/Edge con aceleración gráfica habilitada.
 
 ## Ejecutar
-1. Extraer el ZIP en una carpeta local, preferentemente fuera de OneDrive.
-2. Abrir esa carpeta en VS Code.
-3. Ejecutar `npm install` y luego `npm run dev`.
-4. Abrir http://127.0.0.1:5173/.
+`npm install` → `npm run dev` → http://127.0.0.1:5173/
+Producción: `npm run build` (genera `dist/`, compatible con Vercel sin configuración extra).
 
-## Producción
-`npm run build` genera la carpeta `dist`.
+## Qué editar
+| Qué | Dónde |
+|---|---|
+| WhatsApp, email, endpoint del formulario | `src/config.js` o variables `VITE_WHATSAPP_NUMBER` / `VITE_FORM_ENDPOINT` (ver `.env.example`; en Vercel: Settings → Environment Variables) |
+| Textos de servicios, proceso y "por qué" | `src/data.js` |
+| **Proyectos reales** | `src/data.js` → `PROJECTS` (reemplazar los placeholders; archivos en `public/projects/`) |
+| Escena 3D | `src/components/Scene3D.jsx` |
 
-## Contacto
-En `src/main.jsx` cambiar `WHATSAPP_NUMBER` por tu número internacional sin + ni espacios. Mientras esté vacío, el formulario enviará por email a rubengutierrezdv@gmail.com.
+## Pendiente de conectar
+- **WhatsApp:** sin número, el botón no se muestra y el envío usa el correo.
+- **Formulario:** sin `VITE_FORM_ENDPOINT` no hay envío real; el formulario abre WhatsApp/correo con el mensaje armado y NO muestra "enviado". Con endpoint (Formspree, Web3Forms, etc.) hace un POST JSON y solo confirma si el servidor responde OK.
+- **Proyectos:** hay 3 placeholders marcados (uno por categoría). Videos: `preload="none"`, solo se reproduce uno a la vez, y se pausan al salir de pantalla.
 
-## Cambios en esta versión
-Fondo 3D mejorado: entorno de reflejos procedural (RoomEnvironment, sin HDRI remoto), halo rosado detrás del objeto, anillos orbitales de fondo, materiales con clearcoat y emisivo, tone mapping ACES y sparkles en dos capas. Se mantienen las interacciones (arrastrar, seguir el mouse, cámara reactiva).
-
-## Si falla
-Revisar `node -v` y `node -p "process.arch"` (debe indicar `x64`). Revisar `chrome://gpu` si el 3D no aparece. Si el equipo va lento, bajar `Sparkles count` o `dpr` a `[1,1]` en `Scene`.
+## 3D
+Esfera cromada negra, anillos con giro independiente, detalles fucsia y reflejos procedurales (`RoomEnvironment`, sin HDRI remoto). Se arrastra (mouse y touch; el scroll vertical sigue funcionando) y reacciona al mouse. El chunk de three/R3F se carga aparte y diferido; el texto no espera. Respeta `prefers-reduced-motion` (pose estática), limita DPR, se pausa fuera de pantalla, libera geometrías/materiales/texturas al desmontar y muestra una alternativa si no hay WebGL o se pierde el contexto. Si va lento: bajar `dpr` o `Sparkles count` en `Scene3D.jsx`.
