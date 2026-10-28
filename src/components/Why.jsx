@@ -1,5 +1,5 @@
 import React from 'react';
-import { REASONS } from '../data.js';
+import { REASONS, STACK } from '../data.js';
 
 export default function Why() {
   return (
@@ -12,6 +12,14 @@ export default function Why() {
           </li>
         ))}
       </ul>
+      <div className="stack reveal">
+        <span className="stack-title">TECNOLOGÍAS CON LAS QUE TRABAJO</span>
+        <ul className="stack-list">
+          {STACK.map((t) => (
+            <li key={t.name}><img src={t.icon} alt="" width="28" height="28" loading="lazy" decoding="async" /><span>{t.name}</span></li>
+          ))}
+        </ul>
+      </div>
     </section>
   );
 }

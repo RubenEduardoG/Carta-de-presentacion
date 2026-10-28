@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { CATEGORIES, PROJECTS } from '../data.js';
-import { PORTFOLIO_URL } from '../config.js';
+import { PORTFOLIO_URL, GITHUB_URL } from '../config.js';
 
 function Media({ p, playing, onToggle }) {
   const video = useRef(null);
@@ -35,7 +35,7 @@ function Media({ p, playing, onToggle }) {
   if (poster) {
     return (
       <div className="pmedia" ref={box}>
-        <img src={poster} alt={`Captura de ${p.name}`} loading="lazy" decoding="async" onError={() => setImgFailed(true)} />
+        <img className={p.fit === 'contain' ? 'contain' : undefined} src={poster} alt={p.imageAlt || `Captura de ${p.name}`} loading="lazy" decoding="async" onError={() => setImgFailed(true)} />
       </div>
     );
   }
@@ -62,7 +62,12 @@ function Card({ p, playing, setPlaying }) {
           <dt>Qué desarrollé</dt><dd>{p.built}</dd>
         </dl>
         {p.tech?.length > 0 && <ul className="ptech" aria-label="Tecnologías">{p.tech.map((t) => <li key={t}>{t}</li>)}</ul>}
-        {p.url && <a className="plink" href={p.url} target="_blank" rel="noopener noreferrer">VER SITIO ↗</a>}
+        {(p.url || p.repo) && (
+          <div className="plinks">
+            {p.url && <a className="plink" href={p.url} target="_blank" rel="noopener noreferrer" aria-label={`Ver el sitio de ${p.name}`}>VER SITIO ↗</a>}
+            {p.repo && <a className="plink alt" href={p.repo} target="_blank" rel="noopener noreferrer" aria-label={`Ver el código de ${p.name}`}>CÓDIGO ↗</a>}
+          </div>
+        )}
       </div>
     </article>
   );
@@ -81,7 +86,7 @@ export default function Projects() {
         ))}
       </div>
       <div className="projects-grid">{list.map((p) => <Card key={p.id} p={p} playing={playing} setPlaying={setPlaying} />)}</div>
-      <p className="portfolio-more reveal">¿Querés ver más? <a href={PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">Portfolio completo ↗</a></p>
+      <p className="portfolio-more reveal">¿Querés ver más? <a href={PORTFOLIO_URL} target="_blank" rel="noopener noreferrer">Portfolio completo ↗</a> · <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer">GitHub ↗</a></p>
     </section>
   );
 }

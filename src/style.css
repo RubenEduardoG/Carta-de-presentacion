@@ -97,6 +97,7 @@ h1{font-size:clamp(40px,min(6.3vw,10.5svh),100px);line-height:.9;letter-spacing:
 .pcard:hover{border-color:#ff168499;transform:translateY(-6px)}
 .pmedia{position:relative;aspect-ratio:16/10;background:#101015;overflow:hidden}
 .pmedia img,.pmedia video{width:100%;height:100%;object-fit:cover;display:block}
+.pmedia img.contain{object-fit:contain;background:#f3efe6;padding:6%}
 .pmedia.ph{display:grid;place-content:center;gap:8px;text-align:center;padding:16px;background:repeating-linear-gradient(135deg,#14101a 0 14px,#0d0b11 14px 28px);border-bottom:1px dashed #ff168466}
 .pmedia.ph span{font-size:11px;letter-spacing:2px;font-weight:700;color:var(--pink-soft)}.pmedia.ph small{font-size:11px;color:var(--dim)}
 .playbtn{position:absolute;right:12px;bottom:12px;width:46px;height:46px;border-radius:50%;border:0;background:var(--pink);color:#070707;font-size:15px;cursor:pointer;transition:transform .2s}.playbtn:hover{transform:scale(1.08)}
@@ -111,7 +112,8 @@ h1{font-size:clamp(40px,min(6.3vw,10.5svh),100px);line-height:.9;letter-spacing:
 .pbody dd{font-size:14px;line-height:1.55;color:var(--muted)}
 .ptech{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
 .ptech li{font-size:11px;border:1px solid #ffffff2e;border-radius:20px;padding:5px 10px;color:#ddd}
-.plink{margin-top:auto;padding-top:14px;font:800 11px Inter,sans-serif;letter-spacing:1.3px;color:#fff;text-decoration:none}.plink:hover{color:var(--pink-soft)}
+.plinks{margin-top:auto;padding-top:16px;display:flex;flex-wrap:wrap;gap:10px}
+.plink{display:inline-flex;align-items:center;min-height:40px;padding:0 16px;border-radius:30px;background:var(--pink);color:#070707;font:800 11px Inter,sans-serif;letter-spacing:1.3px;text-decoration:none;transition:transform .2s,box-shadow .2s}.plink:hover{transform:translateY(-2px);box-shadow:0 8px 24px #ff168455}.plink.alt{background:transparent;color:#fff;border:1px solid #55555d}.plink.alt:hover{border-color:var(--pink);box-shadow:none}
 .portfolio-more{margin-top:32px;font-size:14px;color:var(--muted)}.portfolio-more a{color:#fff;border-bottom:1px solid var(--pink);text-decoration:none}
 
 /* PROCESO */
@@ -131,6 +133,14 @@ h1{font-size:clamp(40px,min(6.3vw,10.5svh),100px);line-height:.9;letter-spacing:
 .why-item h3{font-size:19px;margin:14px 0 8px}
 .why-item p{font-size:14px;line-height:1.65;color:var(--muted)}
 
+/* STACK */
+.stack{margin-top:56px;padding-top:30px;border-top:1px solid var(--line)}
+.stack-title{font-size:11px;font-weight:700;letter-spacing:3px;color:var(--pink-soft)}
+.stack-list{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.stack-list li{display:flex;align-items:center;gap:10px;padding:10px 16px 10px 12px;border:1px solid #ffffff22;border-radius:40px;background:#0b090d;font-size:13px;color:#e4e0e6;transition:border-color .25s,transform .25s}
+.stack-list li:hover{border-color:#ff168499;transform:translateY(-2px)}
+.stack-list img{display:block}
+
 /* CONTACTO */
 .contact-section{padding-top:110px;padding-bottom:110px;background:radial-gradient(circle at 75% 30%,#540d34a8,#0b070c 62%)}
 .contact-panel{display:grid;grid-template-columns:1.05fr 1fr;gap:48px;padding:54px;max-width:1240px;border:1px solid #ffffff2e;border-radius:26px;background:#0b090dd9;backdrop-filter:blur(9px)}
@@ -140,6 +150,8 @@ h1{font-size:clamp(40px,min(6.3vw,10.5svh),100px);line-height:.9;letter-spacing:
 .contact-form{display:flex;flex-direction:column;gap:2px}
 .contact-form .primary{align-self:flex-start;margin-top:6px}
 .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.social{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:26px}
+.social a{font-size:12px;letter-spacing:1.4px;font-weight:700;text-decoration:none;color:#d6d1d8;border-bottom:1px solid #ffffff33;padding-bottom:4px}.social a:hover{color:#fff;border-color:var(--pink)}
 .form-note{margin:12px 0 0!important;font-size:12px!important;color:var(--dim)!important}
 .form-status{margin:14px 0 0!important;font-size:13px!important;line-height:1.5;color:#e7e3e9!important;border:1px solid #ff168455;background:#ff16840f;border-radius:10px;padding:11px 14px}
 .form-status.err{border-color:#ff5555aa;background:#ff555514}
