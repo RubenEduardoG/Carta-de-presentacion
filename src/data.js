@@ -47,13 +47,13 @@ export const CATEGORIES = [
  */
 export const PROJECTS = [
   {
-    id: 'torneos', category: 'negocios',
-    name: 'Torneos',
+    id: 'canchita', category: 'negocios',
+    name: 'Canchita',
     business: 'Plataforma para ligas de fútbol amateur · primer cliente: La Esquina Torneo Femenino',
     problem: 'Dejar las planillas y los grupos de WhatsApp: que jugadoras y público sigan el torneo desde el celular y que los organizadores carguen todo sin ayuda técnica.',
     built: 'App mobile-first para varios torneos, con vista pública (tabla, fixture, goleadoras, tarjetas y equipos) y panel para organizadores con fixture automático. Cada torneo queda aislado con seguridad en la base de datos (Row Level Security), los cálculos se hacen con vistas en PostgreSQL y tiene 62 pruebas automáticas. Instalable como PWA.',
     tech: ['PostgreSQL', 'Supabase', 'JavaScript', 'Cloudflare Pages', 'PWA', 'Playwright'],
-    image: '/projects/torneos.webp', imageAlt: 'Captura de la app Torneos con la portada de La Esquina Torneo Femenino y sus pestañas de tabla, fixture, goleadoras, tarjetas y equipos',
+    image: '/projects/canchita.webp', imageAlt: 'Captura de la app Canchita con la portada de La Esquina Torneo Femenino y sus pestañas de tabla, fixture, goleadoras, tarjetas y equipos',
     url: 'https://torneos-app.pages.dev',
   },
   {
