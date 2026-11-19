@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Sparkles } from '@react-three/drei';
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 
@@ -59,6 +58,50 @@ function Halo() {
   );
   useEffect(() => () => { tex.dispose(); geo.dispose(); mat.dispose(); }, [tex, geo, mat]);
   return <mesh position={[0, 0, -2.8]} geometry={geo} material={mat} dispose={null} />;
+}
+
+// Polvo brillante alrededor del objeto (reemplaza a Sparkles de drei, que sumaba mucho peso a la descarga).
+function Dust({ count, color }) {
+  const points = useRef();
+  const { geo, mat, speed } = useMemo(() => {
+    const pos = new Float32Array(count * 3);
+    const speed = new Float32Array(count);
+    for (let i = 0; i < count; i++) {
+      pos[i * 3] = (Math.random() - 0.5) * 10;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 7;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 5;
+      speed[i] = 0.05 + Math.random() * 0.1;
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    const c = document.createElement('canvas');
+    c.width = c.height = 32;
+    const g = c.getContext('2d');
+    const gr = g.createRadialGradient(16, 16, 0, 16, 16, 16);
+    gr.addColorStop(0, 'rgba(255,255,255,1)');
+    gr.addColorStop(0.4, 'rgba(255,255,255,0.35)');
+    gr.addColorStop(1, 'rgba(255,255,255,0)');
+    g.fillStyle = gr;
+    g.fillRect(0, 0, 32, 32);
+    const mat = new THREE.PointsMaterial({
+      color, size: 0.09, map: new THREE.CanvasTexture(c), transparent: true, opacity: 0.45,
+      depthWrite: false, blending: THREE.AdditiveBlending, sizeAttenuation: true,
+    });
+    return { geo, mat, speed };
+  }, [count, color]);
+  useEffect(() => () => { geo.dispose(); mat.map?.dispose(); mat.dispose(); }, [geo, mat]);
+  useFrame((_, dtRaw) => {
+    const dt = Math.min(dtRaw, 0.05);
+    const a = geo.attributes.position;
+    for (let i = 0; i < count; i++) {
+      let y = a.array[i * 3 + 1] + speed[i] * dt;
+      if (y > 3.5) y = -3.5; // sube lento y reaparece abajo
+      a.array[i * 3 + 1] = y;
+    }
+    a.needsUpdate = true;
+    mat.opacity = 0.35 + Math.sin(performance.now() * 0.0012) * 0.1; // titileo suave
+  });
+  return <points ref={points} geometry={geo} material={mat} dispose={null} />;
 }
 
 // Avisa cuando la escena ya dibujó sus primeros cuadros (reflejos listos): recién ahí se muestra.
@@ -275,7 +318,7 @@ export default function Scene3D({ mobile, lowEnd, reduced, paused, onReady, onFa
       <Halo />
       <Core mobile={mobile} reduced={reduced} />
       <ReadyOnFrame onReady={onReady} reduced={reduced} />
-      <Sparkles count={mobile ? 18 : 55} scale={[10, 7, 5]} size={2} speed={0.15} opacity={0.45} color="#ff5aa5" />
+      <Dust count={mobile ? 18 : 55} color="#ff5aa5" />
     </Canvas>
   );
 }
