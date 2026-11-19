@@ -47,6 +47,36 @@ export const CATEGORIES = [
  */
 export const PROJECTS = [
   {
+    id: 'invierte-merida', category: 'landings',
+    name: 'Invierte Mérida',
+    business: 'Asesora de inversión inmobiliaria en preventa (Mérida, México)',
+    problem: 'Convertir el tráfico de Meta Ads en citas por videollamada, con seguimiento automático de cada lead y sin perder los contactos que ya tenía en otra plataforma.',
+    built: 'Landing con video de ventas, encuesta de calificación y agenda con Google Meet en GoHighLevel. Medición con Google Tag Manager y Pixel de Meta, WhatsApp Business API con 13 plantillas aprobadas por Meta, 5 automatizaciones de seguimiento y migración de 370 contactos al CRM.',
+    tech: ['GoHighLevel', 'WhatsApp Business API', 'Meta Ads', 'Google Tag Manager'],
+    image: '/projects/invierte-merida.webp', imageAlt: 'Captura de la landing Invierte en el norte de Mérida, de BOSCO Departamentos, con el video de ventas',
+    url: 'https://inviertemerida.com/',
+  },
+  {
+    id: 'bosco-departamentos', category: 'landings',
+    name: 'BOSCO Departamentos',
+    business: 'Asesora de inversión inmobiliaria en preventa (Mérida, México)',
+    problem: 'Convertir el tráfico de anuncios en sesiones agendadas con inversores calificados y hacer el seguimiento sin mensajes manuales.',
+    built: 'Embudo en GoHighLevel con video de ventas, cuestionario de calificación, agenda con Google Calendar y Meet, pipeline de 6 etapas y WhatsApp Business API en coexistencia con 15 plantillas y 5 automatizaciones.',
+    tech: ['GoHighLevel', 'WhatsApp Business API', 'HTML', 'CSS', 'JavaScript'],
+    image: '/projects/bosco-departamentos.webp', imageAlt: 'Captura de la landing de Marisol Caro para BOSCO Departamentos con el video de ventas',
+    url: 'https://marisolcaro.eslivin.com/bosco',
+  },
+  {
+    id: 'bnb390', category: 'landings',
+    name: 'BNB390',
+    business: 'Programa de mentoría para propietarios y gestores de Airbnb',
+    problem: 'Captar prospectos y dejar reservar la llamada solo a quienes encajan con el programa.',
+    built: 'Landing con video de ventas, testimonios y formulario de calificación de 7 pasos validado también en el servidor. Backend con Vercel Functions preparado para GoHighLevel, API protegida y tests.',
+    tech: ['React', 'Vite', 'Node.js', 'Vercel Functions'],
+    image: '/projects/bnb390.webp', imageAlt: 'Captura de la landing de BNB390 con el título principal',
+    url: 'https://landing-1-silk.vercel.app', repo: 'https://github.com/RubenEduardoG/Landing-1',
+  },
+  {
     id: 'lo-de-martita', category: 'negocios',
     name: 'Lo de Martita',
     business: 'Rotisería con delivery y take away',
