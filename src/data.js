@@ -127,14 +127,14 @@ export const PROJECTS = [
     url: 'https://victeacherve.vercel.app/', repo: 'https://github.com/RubenEduardoG/proyecto-idiomas-clases',
   },
   {
-    id: 'dyd-plegados', category: 'ecommerce',
+    id: 'dyd-plegados', category: 'negocios',
     name: 'DyD Plegados',
-    business: 'Empresa metalúrgica',
-    problem: 'Presentar a la empresa y permitir armar pedidos desde un catálogo.',
-    built: 'Sitio institucional con simulador interactivo, catálogo, carrito y lógica de compra.',
-    tech: ['JavaScript'],
-    image: '/projects/dyd-plegados.webp', imageAlt: 'Foto del taller de DyD Plegados',
-    url: 'https://dydplegados.netlify.app/', repo: 'https://github.com/RubenEduardoG/80790',
+    business: 'Metalúrgica de José León Suárez, Buenos Aires',
+    problem: 'Mostrar sus servicios de corte, plegado, cilindrado y punzonado de chapas, y recibir pedidos de presupuesto de particulares y empresas.',
+    built: 'Sitio institucional con secciones de empresa, servicios, trabajos a medida y galería de trabajos, con pedido de presupuesto directo por WhatsApp.',
+    tech: ['HTML', 'CSS', 'JavaScript'],
+    image: '/projects/dyd-plegados.webp', imageAlt: 'Captura de la portada del sitio de DyD Plegados con una pieza metálica a medida',
+    url: 'https://dydplegados.vercel.app/',
   },
 ];
 
