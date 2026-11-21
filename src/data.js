@@ -47,6 +47,16 @@ export const CATEGORIES = [
  */
 export const PROJECTS = [
   {
+    id: 'turnos-peluqueria', category: 'negocios',
+    name: 'Turnos para peluquería',
+    business: 'App de reservas para peluqueros y barberos independientes',
+    problem: 'Dejar de coordinar turnos por mensajes: que el cliente reserve solo y que el peluquero maneje su agenda, las cancelaciones y los huecos libres sin perder tiempo.',
+    built: 'Reserva en 3 pasos sin crear cuenta, con horarios libres en vivo y cambios o cancelaciones por el propio cliente. Lista de espera automática que ofrece los turnos liberados por 15 minutos, panel del peluquero con agenda del día y flujo para bloquear horarios y avisar por WhatsApp. Base en Supabase con PostgreSQL, RLS y una regla que impide reservas superpuestas.',
+    tech: ['Supabase', 'PostgreSQL', 'JavaScript', 'PWA'],
+    image: '/projects/turnos-peluqueria.webp', imageAlt: 'Dos pantallas de la app: la elección de día y horario del cliente y el panel del peluquero con la agenda del día',
+    url: 'https://turnos-peluqueria-one.vercel.app/demo/', repo: 'https://github.com/RubenEduardoG/turnos-peluqueria',
+  },
+  {
     id: 'canchita', category: 'negocios',
     name: 'Canchita',
     business: 'Plataforma para ligas de fútbol amateur · primer cliente: La Esquina Torneo Femenino',
