@@ -59,12 +59,12 @@ export const PROJECTS = [
   {
     id: 'canchita', category: 'negocios',
     name: 'Canchita',
-    business: 'Plataforma para ligas de fútbol amateur · primer cliente: La Esquina Torneo Femenino',
-    problem: 'Dejar las planillas y los grupos de WhatsApp: que jugadoras y público sigan el torneo desde el celular y que los organizadores carguen todo sin ayuda técnica.',
-    built: 'App mobile-first para varios torneos, con vista pública (tabla, fixture, goleadoras, tarjetas y equipos) y panel para organizadores con fixture automático. Cada torneo queda aislado con seguridad en la base de datos (Row Level Security), los cálculos se hacen con vistas en PostgreSQL y tiene 62 pruebas automáticas. Instalable como PWA.',
-    tech: ['PostgreSQL', 'Supabase', 'JavaScript', 'Cloudflare Pages', 'PWA', 'Playwright'],
-    image: '/projects/canchita.webp', imageAlt: 'Captura de la app Canchita con la portada de La Esquina Torneo Femenino y sus pestañas de tabla, fixture, goleadoras, tarjetas y equipos',
-    url: 'https://torneos-app.pages.dev',
+    business: 'App para torneos de fútbol amateur · en producción con La Esquina Torneo Femenino',
+    problem: 'Los torneos amateur se organizan por WhatsApp: la tabla circula como foto, los resultados se pierden y el organizador arma las planillas a mano cada fecha.',
+    built: 'App web y Android donde el organizador carga equipos y resultados, y el fixture, la tabla, los playoffs, las estadísticas y el perfil de cada jugadora se actualizan solos. Importación de planteles desde Excel, CSV o WhatsApp, planillas de partido para imprimir e inscripciones online. Multi-torneo sobre PostgreSQL (Supabase) con seguridad por fila y el DNI protegido, probado con Playwright.',
+    tech: ['JavaScript', 'PostgreSQL', 'Supabase', 'Cloudflare Pages', 'PWA', 'Playwright'],
+    image: '/projects/canchita.webp', imageAlt: 'Portada de Canchita con el logo y el buscador de torneos',
+    url: 'https://canchitatorneos.com.ar',
   },
   {
     id: 'invierte-merida', category: 'landings',
