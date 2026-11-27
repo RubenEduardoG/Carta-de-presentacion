@@ -47,6 +47,26 @@ export const CATEGORIES = [
  */
 export const PROJECTS = [
   {
+    id: 'turnos-peluqueria', category: 'negocios',
+    name: 'Turnos para peluquería',
+    business: 'App de reservas para peluqueros y barberos independientes',
+    problem: 'Dejar de coordinar turnos por mensajes: que el cliente reserve solo y que el peluquero maneje su agenda, las cancelaciones y los huecos libres sin perder tiempo.',
+    built: 'Reserva en 3 pasos sin crear cuenta, con horarios libres en vivo y cambios o cancelaciones por el propio cliente. Lista de espera automática que ofrece los turnos liberados por 15 minutos, panel del peluquero con agenda del día y flujo para bloquear horarios y avisar por WhatsApp. Base en Supabase con PostgreSQL, RLS y una regla que impide reservas superpuestas.',
+    tech: ['Supabase', 'PostgreSQL', 'JavaScript', 'PWA'],
+    image: '/projects/turnos-peluqueria.webp', imageAlt: 'Dos pantallas de la app: la elección de día y horario del cliente y el panel del peluquero con la agenda del día',
+    url: 'https://turnos-peluqueria-one.vercel.app/demo/', repo: 'https://github.com/RubenEduardoG/turnos-peluqueria',
+  },
+  {
+    id: 'canchita', category: 'negocios',
+    name: 'Canchita',
+    business: 'App para torneos de fútbol amateur · en producción con La Esquina Torneo Femenino',
+    problem: 'Los torneos amateur se organizan por WhatsApp: la tabla circula como foto, los resultados se pierden y el organizador arma las planillas a mano cada fecha.',
+    built: 'App web y Android donde el organizador carga equipos y resultados, y el fixture, la tabla, los playoffs, las estadísticas y el perfil de cada jugadora se actualizan solos. Importación de planteles desde Excel, CSV o WhatsApp, planillas de partido para imprimir e inscripciones online. Multi-torneo sobre PostgreSQL (Supabase) con seguridad por fila y el DNI protegido, probado con Playwright.',
+    tech: ['JavaScript', 'PostgreSQL', 'Supabase', 'Cloudflare Pages', 'PWA', 'Playwright'],
+    image: '/projects/canchita.webp', imageAlt: 'Portada de Canchita con el logo y el buscador de torneos',
+    url: 'https://canchitatorneos.com.ar',
+  },
+  {
     id: 'invierte-merida', category: 'landings',
     name: 'Invierte Mérida',
     business: 'Asesora de inversión inmobiliaria en preventa (Mérida, México)',
@@ -117,14 +137,14 @@ export const PROJECTS = [
     url: 'https://victeacherve.vercel.app/', repo: 'https://github.com/RubenEduardoG/proyecto-idiomas-clases',
   },
   {
-    id: 'dyd-plegados', category: 'ecommerce',
+    id: 'dyd-plegados', category: 'negocios',
     name: 'DyD Plegados',
-    business: 'Empresa metalúrgica',
-    problem: 'Presentar a la empresa y permitir armar pedidos desde un catálogo.',
-    built: 'Sitio institucional con simulador interactivo, catálogo, carrito y lógica de compra.',
-    tech: ['JavaScript'],
-    image: '/projects/dyd-plegados.webp', imageAlt: 'Foto del taller de DyD Plegados',
-    url: 'https://dydplegados.netlify.app/', repo: 'https://github.com/RubenEduardoG/80790',
+    business: 'Metalúrgica de José León Suárez, Buenos Aires',
+    problem: 'Mostrar sus servicios de corte, plegado, cilindrado y punzonado de chapas, y recibir pedidos de presupuesto de particulares y empresas.',
+    built: 'Sitio institucional con secciones de empresa, servicios, trabajos a medida y galería de trabajos, con pedido de presupuesto directo por WhatsApp.',
+    tech: ['HTML', 'CSS', 'JavaScript'],
+    image: '/projects/dyd-plegados.webp', imageAlt: 'Captura de la portada del sitio de DyD Plegados con una pieza metálica a medida',
+    url: 'https://dydplegados.vercel.app/',
   },
 ];
 
